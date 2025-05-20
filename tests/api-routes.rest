@@ -1,0 +1,80 @@
+@host = {{$dotenv HOST || localhost}}
+@port = {{$dotenv PORT || 3000}}
+@baseUrl = http://{{host}}:{{port}}
+# @baseUrl = https://production-domain.com
+
+### API Routes
+
+### Customers
+
+### Get All Customers
+GET {{baseUrl}}/api/customers
+Content-Type: application/json
+
+### Get Customer by ID
+GET {{baseUrl}}/api/customers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+### Create New Customer
+POST {{baseUrl}}/api/customers
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "testpass123",
+    "org_name": "Test Organization",
+    "org_handle": "testorg",
+    "email": "test@example.com",
+    "marketing_consent": true,
+    "phone": "1234567890",
+    "timezone": "UTC",
+    "account_phone_number": "0987654321"
+}
+
+### Update Customer
+PUT {{baseUrl}}/api/customers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+{
+    "email": "updated@example.com",
+    "phone": "9876543210"
+}
+
+### Delete Customer
+DELETE {{baseUrl}}/api/customers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+### Subscribers
+
+### Get All Subscribers
+GET {{baseUrl}}/api/subscribers
+Content-Type: application/json
+
+### Get Subscriber by ID
+GET {{baseUrl}}/api/subscribers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+### Create New Subscriber
+POST {{baseUrl}}/api/subscribers
+Content-Type: application/json
+
+{
+    "customer": "65f2a1b3c4d5e6f7g8h9i0j1",
+    "phone": "1234567890"
+}
+
+### Update Subscriber
+PUT {{baseUrl}}/api/subscribers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+{
+    "phone": "9876543210"
+}
+
+### Delete Subscriber
+DELETE {{baseUrl}}/api/subscribers/65f2a1b3c4d5e6f7g8h9i0j1
+Content-Type: application/json
+
+### Get Customer's Subscribers
+GET {{baseUrl}}/api/customers/65f2a1b3c4d5e6f7g8h9i0j1/subscribers
+Content-Type: application/json 

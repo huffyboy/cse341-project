@@ -1,0 +1,65 @@
+### Test Routes
+
+### Test Error Endpoint - 400 Bad Request
+GET http://localhost:3000/api/test/error?type=400
+Content-Type: application/json
+
+### Test Error Endpoint - 401 Unauthorized
+GET http://localhost:3000/api/test/error?type=401
+Content-Type: application/json
+
+### Test Error Endpoint - 403 Forbidden
+GET http://localhost:3000/api/test/error?type=403
+Content-Type: application/json
+
+### Test Error Endpoint - 404 Not Found
+GET http://localhost:3000/api/test/error?type=404
+Content-Type: application/json
+
+### Test Error Endpoint - 409 Conflict
+GET http://localhost:3000/api/test/error?type=409
+Content-Type: application/json
+
+### Test Error Endpoint - 500 Internal Server Error
+GET http://localhost:3000/api/test/error?type=500
+Content-Type: application/json
+
+### Test Validation Endpoint - Invalid Email
+POST http://localhost:3000/api/test/validation
+Content-Type: application/json
+
+{
+    "email": "invalid-email",
+    "age": 20
+}
+
+### Test Validation Endpoint - Invalid Age
+POST http://localhost:3000/api/test/validation
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "age": 16
+}
+
+### Test Validation Endpoint - Both Invalid
+POST http://localhost:3000/api/test/validation
+Content-Type: application/json
+
+{
+    "email": "invalid-email",
+    "age": 16
+}
+
+### Test Validation Endpoint - Valid Data
+POST http://localhost:3000/api/test/validation
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "age": 20
+}
+
+### Test Async Error Endpoint
+GET http://localhost:3000/api/test/async
+Content-Type: application/json 
