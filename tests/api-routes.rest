@@ -1,7 +1,7 @@
 @host = {{$dotenv HOST || localhost}}
 @port = {{$dotenv PORT || 3000}}
 @baseUrl = http://{{host}}:{{port}}
-# @baseUrl = https://production-domain.com
+# @baseUrl = https://cse341-project-tqcl.onrender.com
 
 ### API Routes
 

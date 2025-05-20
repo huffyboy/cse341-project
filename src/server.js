@@ -19,6 +19,7 @@ connectDB();
 const app = express();
 const port = process.env.PORT || 3000;
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const baseUrl = process.env.URL || `http://localhost:${port}`;
 
 // Middleware
 app.use(express.json());
@@ -49,8 +50,8 @@ app.use(errorHandler);
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-  console.log(`API Documentation available at http://localhost:${port}/api-docs`);
+  console.log(`Server is running at ${baseUrl}`);
+  console.log(`API Documentation available at ${baseUrl}/api-docs`);
   if (isDevelopment) {
     console.log('Test routes are enabled (development mode)');
   }

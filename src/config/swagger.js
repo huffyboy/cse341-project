@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const baseUrl = process.env.URL || `http://localhost:${process.env.PORT || 3000}`;
 
 const options = {
   definition: {
@@ -20,8 +21,8 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT || 3000}`,
-        description: 'Development server',
+        url: baseUrl,
+        description: isDevelopment ? 'Development server' : 'Production server',
       },
     ],
     tags: [
