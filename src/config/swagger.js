@@ -192,7 +192,8 @@ const options = {
     }
   },
   apis: [
-    './src/routes/*.js',
+    './src/routes/customers.js',
+    './src/routes/subscribers.js',
     // Only include test routes in development
     ...(isDevelopment ? ['./src/routes/testRoutes.js'] : []),
   ],
