@@ -6,8 +6,12 @@ import {
   updateSubscriber,
   deleteSubscriber
 } from '../controllers/subscriberController.js';
+import { createErrorHandler } from '../middlewares/errorHandler.js';
 
 const router = express.Router();
+
+// Create error handler with custom message for subscriber routes
+const handleSubscriberErrors = createErrorHandler('An error occurred while processing your subscriber request');
 
 /**
  * @swagger
@@ -143,5 +147,8 @@ router.put('/:id', updateSubscriber);
  *         description: Server error
  */
 router.delete('/:id', deleteSubscriber);
+
+// Add error handler at the end of the routes
+router.use(handleSubscriberErrors);
 
 export default router; 

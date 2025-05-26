@@ -1,7 +1,13 @@
 import express from 'express';
-import { ApiError } from '../middlewares/errorHandler.js';
+import { ApiError, createErrorHandler } from '../middlewares/errorHandler.js';
 
 const router = express.Router();
+
+// Counter to track which error we're on
+let errorCounter = 0;
+
+// Create error handler with custom message for test routes
+const handleTestErrors = createErrorHandler('Something went wrong in the test endpoint');
 
 /**
  * @swagger
@@ -41,12 +47,36 @@ router.get('/error', (req, res, next) => {
     '500': 'Internal Server Error - Something went wrong'
   };
 
-  // For 500 error, throw an actual exception
+  // Array of different error types to trigger
+  const runtimeErrors = [
+    { name: 'GenericError', trigger: () => { throw new Error('This is a test 500 error'); } },
+    { name: 'ReferenceError', trigger: () => { console.log(undefinedVariable); } },
+    { name: 'MethodNotFoundError', trigger: () => { const obj = {}; obj.nonExistentMethod(); } },
+    { name: 'SyntaxError', trigger: () => { JSON.parse('invalid json'); } },
+    { name: 'RangeError', trigger: () => { throw new RangeError('Number too large'); } },
+    { name: 'TypeError', trigger: () => { throw new TypeError('Invalid type operation'); } },
+    { name: 'EvalError', trigger: () => { throw new EvalError('Invalid eval'); } }
+  ];
+
+  // If type is 500, choose error based on counter or random if we've gone through all
   if (errorType === '500') {
-    throw new Error('This is a test 500 error');
+    let selectedError;
+    if (errorCounter < runtimeErrors.length) {
+      // Cycle through errors in order
+      selectedError = runtimeErrors[errorCounter];
+      errorCounter++;
+      console.error('\x1b[33m%s\x1b[0m', `Triggering error ${errorCounter}/${runtimeErrors.length}: ${selectedError.name}`);
+    } else {
+      // After cycling through all, switch to random
+      selectedError = runtimeErrors[Math.floor(Math.random() * runtimeErrors.length)];
+      console.error('\x1b[33m%s\x1b[0m', `Triggering random error: ${selectedError.name}`);
+    }
+    selectedError.trigger();
   }
 
-  // For other errors, use our custom ApiError
+  // For other errors or if runtime error wasn't chosen, use our custom ApiError
+  // Print API error in blue
+  console.error('\x1b[34m%s\x1b[0m', `Triggering API error: ${errorType}`);
   next(new ApiError(parseInt(errorType), errorMessages[errorType]));
 });
 
@@ -117,5 +147,8 @@ router.get('/async', async (req, res, next) => {
     next(error);
   }
 });
+
+// Add error handler at the end of the routes
+router.use(handleTestErrors);
 
 export default router; 

@@ -7,8 +7,12 @@ import {
   deleteCustomer
 } from '../controllers/customerController.js';
 import { getCustomerSubscribers } from '../controllers/subscriberController.js';
+import { createErrorHandler } from '../middlewares/errorHandler.js';
 
 const router = express.Router();
+
+// Create error handler with custom message for customer routes
+const handleCustomerErrors = createErrorHandler('An error occurred while processing your customer request');
 
 /**
  * @swagger
@@ -173,5 +177,8 @@ router.put('/:id', updateCustomer);
  *         description: Server error
  */
 router.delete('/:id', deleteCustomer);
+
+// Add error handler at the end of the routes
+router.use(handleCustomerErrors);
 
 export default router; 

@@ -8,7 +8,7 @@ import subscribersRouter from './routes/subscribers.js';
 import connectDB from './config/database.js';
 import { specs } from './config/swagger.js';
 import testRoutes from './routes/testRoutes.js';
-import { errorHandler, notFound } from './middlewares/errorHandler.js';
+import { createErrorHandler, notFound } from './middlewares/errorHandler.js';
 
 // Load environment variables
 dotenv.config();
@@ -20,6 +20,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const baseUrl = process.env.URL || `http://localhost:${port}`;
+
+// Create global error handler
+const handleGlobalErrors = createErrorHandler('An unexpected error occurred', isDevelopment);
 
 // Middleware
 app.use(express.json());
@@ -46,7 +49,7 @@ app.get('/', (req, res) => {
 
 // Error handling middleware
 app.use(notFound);
-app.use(errorHandler);
+app.use(handleGlobalErrors);
 
 // Start server
 app.listen(port, () => {
