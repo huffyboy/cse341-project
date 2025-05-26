@@ -35,10 +35,25 @@ export const createErrorHandler = (userMessage = 'An unexpected error occurred',
     }
 
     if (err.name === 'MongoServerError' && err.code === 11000) {
+      // Extract the field that caused the duplicate error
+      const field = Object.keys(err.keyPattern)[0];
+      let message = 'This record already exists';
+      
+      // Provide more specific messages for known unique fields
+      if (field === 'phone') {
+        message = 'This phone number is already registered';
+      } else if (field === 'email') {
+        message = 'This email address is already registered';
+      } else if (field === 'username') {
+        message = 'This username is already taken';
+      } else if (field === 'org_handle') {
+        message = 'This organization handle is already taken';
+      }
+
       return res.status(409).json({
         error: {
           status: 409,
-          message: 'Duplicate key error',
+          message,
           type: 'DuplicateError'
         }
       });
