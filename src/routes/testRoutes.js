@@ -109,12 +109,26 @@ router.post('/validation', (req, res, next) => {
   const { email, age } = req.body;
   const errors = [];
 
-  if (!email || !email.includes('@')) {
-    errors.push('Invalid email format');
+  // Email validation (matching Customer model style)
+  if (email) {
+    if (typeof email !== 'string') {
+      errors.push('Email must be a string');
+    } else {
+      // Trim and lowercase like Mongoose does
+      const trimmedEmail = email.trim().toLowerCase();
+      if (!trimmedEmail.includes('@')) {
+        errors.push('Invalid email format');
+      }
+    }
   }
 
-  if (!age || age < 18) {
-    errors.push('Age must be 18 or older');
+  // Age validation (matching Mongoose style)
+  if (age) {
+    if (typeof age !== 'number') {
+      errors.push('Age must be a number');
+    } else if (age < 18) {
+      errors.push('Age must be 18 or older');
+    }
   }
 
   if (errors.length > 0) {

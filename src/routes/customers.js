@@ -8,6 +8,7 @@ import {
 } from '../controllers/customerController.js';
 import { getCustomerSubscribers } from '../controllers/subscriberController.js';
 import { createErrorHandler } from '../middlewares/errorHandler.js';
+import { customerValidationRules, validate } from '../middlewares/validators.js';
 
 const router = express.Router();
 
@@ -118,7 +119,7 @@ router.get('/:id', getCustomer);
  *       500:
  *         description: Server error
  */
-router.post('/', createCustomer);
+router.post('/', customerValidationRules, validate, createCustomer);
 
 /**
  * @swagger
@@ -153,7 +154,7 @@ router.post('/', createCustomer);
  *       500:
  *         description: Server error
  */
-router.put('/:id', updateCustomer);
+router.put('/:id', customerValidationRules, validate, updateCustomer);
 
 /**
  * @swagger

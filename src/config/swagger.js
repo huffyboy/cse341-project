@@ -48,42 +48,89 @@ const options = {
           properties: {
             username: {
               type: 'string',
-              description: 'Unique username for the customer'
+              description: 'Unique username for the customer',
+              minLength: 3,
+              pattern: '^[a-zA-Z0-9_-]+$',
+              example: 'riceballfriend',
+              description: 'Username must be at least 3 characters long and can only contain letters, numbers, underscores, and hyphens'
             },
             password: {
               type: 'string',
-              description: 'Customer password'
+              description: 'Customer password',
+              minLength: 6,
+              example: 'securepass123',
+              description: 'Password must be at least 6 characters long'
             },
             org_name: {
               type: 'string',
-              description: 'Organization name'
+              description: 'Organization name',
+              minLength: 2,
+              maxLength: 100,
+              example: 'Riceball Friends',
+              description: 'Organization name must be between 2 and 100 characters'
             },
             org_handle: {
               type: 'string',
-              description: 'Unique organization handle'
+              description: 'Unique organization handle used in text messages',
+              minLength: 2,
+              maxLength: 30,
+              pattern: '^[a-zA-Z0-9_-]+$',
+              example: 'riceball-friends',
+              description: 'Organization handle must be between 2 and 30 characters, can only contain letters, numbers, underscores, and hyphens, and cannot have consecutive underscores or hyphens'
             },
             email: {
               type: 'string',
               format: 'email',
-              description: 'Customer email address'
+              description: 'Customer email address (optional)',
+              example: 'contact@riceball.com'
             },
             marketing_consent: {
               type: 'boolean',
               default: false,
-              description: 'Marketing consent status'
+              description: 'Marketing consent status (defaults to false)',
+              example: false
             },
             phone: {
               type: 'string',
-              description: 'Customer phone number'
+              description: 'Customer phone number (optional)',
+              pattern: '^\\+?[1-9]\\d{1,14}$',
+              example: '+1234567890',
+              description: 'Phone number must be in international format (e.g., +1234567890)'
             },
             timezone: {
               type: 'string',
-              description: 'Customer timezone'
+              description: 'Customer timezone',
+              default: 'America/New_York',
+              enum: [
+                'America/New_York',
+                'America/Chicago',
+                'America/Denver',
+                'America/Los_Angeles',
+                'America/Anchorage',
+                'Pacific/Honolulu',
+                'America/Phoenix'
+              ],
+              example: 'America/New_York',
+              description: 'Timezone must be one of the supported US timezones (defaults to America/New_York)'
             },
             account_phone_number: {
               type: 'string',
-              description: 'Account phone number'
+              description: 'Premium account phone number for sending texts (optional)',
+              pattern: '^\\+?[1-9]\\d{1,14}$',
+              example: '+1987654321',
+              description: 'Account phone number must be in international format and different from the main phone number'
             }
+          },
+          example: {
+            username: 'riceballfriend',
+            password: 'securepass123',
+            org_name: 'Riceball Friends',
+            org_handle: 'riceball-friends',
+            email: 'contact@riceball.com',
+            marketing_consent: false,
+            phone: '+1234567890',
+            timezone: 'America/New_York',
+            account_phone_number: '+1987654321'
           }
         },
         Subscriber: {

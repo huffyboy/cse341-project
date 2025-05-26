@@ -7,6 +7,7 @@ import {
   deleteSubscriber
 } from '../controllers/subscriberController.js';
 import { createErrorHandler } from '../middlewares/errorHandler.js';
+import { subscriberValidationRules, validate } from '../middlewares/validators.js';
 
 const router = express.Router();
 
@@ -88,7 +89,7 @@ router.get('/:id', getSubscriber);
  *       500:
  *         description: Server error
  */
-router.post('/', createSubscriber);
+router.post('/', subscriberValidationRules, validate, createSubscriber);
 
 /**
  * @swagger
@@ -123,7 +124,7 @@ router.post('/', createSubscriber);
  *       500:
  *         description: Server error
  */
-router.put('/:id', updateSubscriber);
+router.put('/:id', subscriberValidationRules, validate, updateSubscriber);
 
 /**
  * @swagger
