@@ -75,10 +75,14 @@ app.use(session({
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
     sameSite: 'lax',
-    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+    domain: process.env.NODE_ENV === 'production' ? 'cse341-project-tqcl.onrender.com' : undefined
   },
-  name: 'sessionId'
+  name: 'sessionId',
+  rolling: true
 }));
+
+// Trust proxy
+app.set('trust proxy', 1);
 
 // Debug middleware for session
 app.use((req, res, next) => {
@@ -87,7 +91,12 @@ app.use((req, res, next) => {
     hasSession: !!req.session,
     hasUser: !!req.session?.passport?.user,
     user: req.session?.passport?.user,
-    cookie: req.session?.cookie
+    cookie: req.session?.cookie,
+    headers: {
+      host: req.headers.host,
+      origin: req.headers.origin,
+      referer: req.headers.referer
+    }
   });
   next();
 });

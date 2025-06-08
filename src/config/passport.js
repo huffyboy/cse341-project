@@ -8,8 +8,11 @@ dotenv.config();
 
 // Passport session serialization
 passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user);
-  // Store only the user ID in the session
+  console.log('Serializing user:', {
+    id: user._id,
+    email: user.email,
+    sessionID: user.sessionID
+  });
   done(null, user._id);
 });
 
@@ -17,7 +20,11 @@ passport.deserializeUser(async (id, done) => {
   console.log('Deserializing user ID:', id);
   try {
     const user = await Customer.findById(id);
-    console.log('Deserialized user:', user ? 'found' : 'not found');
+    console.log('Deserialized user:', {
+      found: !!user,
+      id: user?._id,
+      email: user?.email
+    });
     
     if (!user) {
       console.log('User not found during deserialization');
@@ -240,5 +247,16 @@ passport.use('github-connect', new GitHubStrategy({
     }
   }
 ));
+
+// Add session debug middleware
+passport.use('session-debug', (req, res, next) => {
+  console.log('Passport session debug:', {
+    sessionID: req.sessionID,
+    isAuthenticated: req.isAuthenticated(),
+    user: req.user,
+    session: req.session
+  });
+  next();
+});
 
 export default passport; 
