@@ -6,6 +6,24 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Passport session serialization
+passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user._id);
+  done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  console.log('Deserializing user:', id);
+  try {
+    const user = await Customer.findById(id);
+    console.log('Deserialized user:', user ? 'found' : 'not found');
+    done(null, user);
+  } catch (error) {
+    console.error('Error deserializing user:', error);
+    done(error);
+  }
+});
+
 // Google Strategy for Signup
 passport.use('google-signup', new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -215,19 +233,5 @@ passport.use('github-connect', new GitHubStrategy({
     }
   }
 ));
-
-// Serialization
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await Customer.findById(id);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
 
 export default passport; 
