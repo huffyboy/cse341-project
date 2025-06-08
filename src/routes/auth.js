@@ -14,9 +14,15 @@ const router = express.Router();
 
 // Custom middleware for setup routes - only checks authentication
 const isAuthenticatedForSetup = (req, res, next) => {
+  console.log('isAuthenticatedForSetup middleware - User:', req.user ? 'exists' : 'not found');
+  console.log('isAuthenticatedForSetup middleware - Session:', req.session);
+  console.log('isAuthenticatedForSetup middleware - isAuthenticated:', req.isAuthenticated());
+  
   if (!req.isAuthenticated()) {
+    console.log('isAuthenticatedForSetup middleware - Not authenticated, redirecting to login');
     return res.redirect('/auth/login');
   }
+  console.log('isAuthenticatedForSetup middleware - Authentication successful, proceeding to next middleware');
   next();
 };
 

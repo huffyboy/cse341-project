@@ -19,6 +19,7 @@ import testRoutes from './routes/testRoutes.js';
 import { createErrorHandler, notFound } from './middlewares/errorHandler.js';
 import methodOverride from 'method-override';
 import flash from 'connect-flash';
+import Customer from './models/Customer.js';
 
 // Load environment variables
 dotenv.config();
@@ -97,6 +98,22 @@ app.use('/dashboard', announcementsRouter);
 if (isDevelopment) {
   app.use('/api/test', testRoutes);
 }
+
+// Passport session serialization
+passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user._id);
+  done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  console.log('Deserializing user:', id);
+  try {
+    const user = await Customer.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
+});
 
 // Error handling middleware
 app.use(notFound);
