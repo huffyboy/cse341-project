@@ -6,7 +6,6 @@ import {
   updateCustomer,
   deleteCustomer
 } from '../controllers/customerController.js';
-import { getCustomerSubscribers } from '../controllers/subscriberController.js';
 import { createErrorHandler } from '../middlewares/errorHandler.js';
 import { customerValidationRules, validate } from '../middlewares/validators.js';
 
@@ -31,42 +30,9 @@ const handleCustomerErrors = createErrorHandler('An error occurred while process
  *               items:
  *                 $ref: '#/components/schemas/Customer'
  *       500:
- *         description: Server error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.get('/', getAllCustomers);
-
-/**
- * @swagger
- * /api/customers/{id}/subscribers:
- *   get:
- *     summary: Get customer's subscribers
- *     tags: [Customers]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Customer ID
- *     responses:
- *       200:
- *         description: List of subscribers for the customer
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Subscriber'
- *       404:
- *         description: Customer not found
- *       500:
- *         description: Server error
- */
-router.get('/:id/subscribers', getCustomerSubscribers);
 
 /**
  * @swagger
@@ -89,9 +55,9 @@ router.get('/:id/subscribers', getCustomerSubscribers);
  *             schema:
  *               $ref: '#/components/schemas/Customer'
  *       404:
- *         description: Customer not found
+ *         $ref: '#/components/responses/NotFound'
  *       500:
- *         description: Server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.get('/:id', getCustomer);
 
@@ -115,9 +81,9 @@ router.get('/:id', getCustomer);
  *             schema:
  *               $ref: '#/components/schemas/Customer'
  *       400:
- *         description: Invalid input
+ *         $ref: '#/components/responses/BadRequest'
  *       500:
- *         description: Server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.post('/', customerValidationRules, validate, createCustomer);
 
@@ -147,12 +113,12 @@ router.post('/', customerValidationRules, validate, createCustomer);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Customer'
- *       404:
- *         description: Customer not found
  *       400:
- *         description: Invalid input
+ *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  *       500:
- *         description: Server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.put('/:id', customerValidationRules, validate, updateCustomer);
 
@@ -173,13 +139,10 @@ router.put('/:id', customerValidationRules, validate, updateCustomer);
  *       200:
  *         description: Customer deleted successfully
  *       404:
- *         description: Customer not found
+ *         $ref: '#/components/responses/NotFound'
  *       500:
- *         description: Server error
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.delete('/:id', deleteCustomer);
-
-// Add error handler at the end of the routes
-router.use(handleCustomerErrors);
 
 export default router; 

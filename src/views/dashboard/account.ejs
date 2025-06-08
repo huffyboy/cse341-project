@@ -1,0 +1,133 @@
+<div class="container mt-4">
+    <!-- Organization Settings -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h5 mb-4">Settings</h2>
+            <form action="/dashboard/account" method="POST">
+                <div class="mb-3">
+                    <label for="org_name" class="form-label fw-bold">Organization Name</label>
+                    <input 
+                        type="text" 
+                        class="form-control border-2" 
+                        id="org_name" 
+                        name="org_name" 
+                        value="<%= user.org_name %>"
+                        required
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="org_handle" class="form-label fw-bold">Organization Handle</label>
+                    <input 
+                        type="text" 
+                        class="form-control border-2" 
+                        id="org_handle" 
+                        name="org_handle" 
+                        value="<%= user.org_handle %>"
+                        required
+                    >
+                    <div class="form-text">
+                        This will be used for SMS commands (e.g., "follow yourhandle"). 
+                        No spaces or special characters.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold">Email (Optional)</label>
+                    <input 
+                        type="email" 
+                        class="form-control border-2" 
+                        id="email" 
+                        name="email"
+                        value="<%= user.email %>"
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label fw-bold">Phone (Optional)</label>
+                    <input 
+                        type="tel" 
+                        class="form-control border-2" 
+                        id="phone" 
+                        name="phone"
+                        value="<%= user.phone %>"
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="timezone" class="form-label fw-bold">Default Timezone</label>
+                    <select 
+                        class="form-select border-2" 
+                        id="timezone" 
+                        name="timezone" 
+                        required
+                    >
+                        <option value="UTC" <%= user.timezone === 'UTC' ? 'selected' : '' %>>UTC</option>
+                        <option value="America/New_York" <%= user.timezone === 'America/New_York' ? 'selected' : '' %>>Eastern Time</option>
+                        <option value="America/Chicago" <%= user.timezone === 'America/Chicago' ? 'selected' : '' %>>Central Time</option>
+                        <option value="America/Denver" <%= user.timezone === 'America/Denver' ? 'selected' : '' %>>Mountain Time</option>
+                        <option value="America/Los_Angeles" <%= user.timezone === 'America/Los_Angeles' ? 'selected' : '' %>>Pacific Time</option>
+                    </select>
+                </div>
+                <div class="mb-3 form-check">
+                    <input 
+                        type="checkbox" 
+                        class="form-check-input border-2" 
+                        id="marketing_consent" 
+                        name="marketing_consent"
+                        style="width: 1.2em; height: 1.2em;"
+                        <%= user.marketing_consent ? 'checked' : '' %>
+                    >
+                    <label class="form-check-label fw-bold" for="marketing_consent">
+                        I agree to receive marketing communications
+                    </label>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- OAuth Providers -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Connected Accounts</h5>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                <% if (user.oauth_providers && user.oauth_providers.length > 0) { %>
+                    <% user.oauth_providers.forEach(provider => { %>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="bi bi-<%= provider.provider === 'google' ? 'google' : 'github' %> me-2"></i>
+                                <%= provider.provider.charAt(0).toUpperCase() + provider.provider.slice(1) %>
+                                <small class="text-muted d-block"><%= provider.email %></small>
+                            </div>
+                            <% if (user.oauth_providers.length > 1) { %>
+                                <form action="/auth/disconnect/<%= provider.provider %>" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-x-circle me-1"></i>Disconnect
+                                    </button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="text-center text-muted py-3">
+                        No accounts connected
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="mt-3">
+                <% if (!user.oauth_providers.some(p => p.provider === 'google')) { %>
+                    <a href="/auth/connect/google" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-google me-1"></i>Connect Google
+                    </a>
+                <% } %>
+                <% if (!user.oauth_providers.some(p => p.provider === 'github')) { %>
+                    <a href="/auth/connect/github" class="btn btn-outline-dark">
+                        <i class="bi bi-github me-1"></i>Connect GitHub
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,104 @@
+<div class="container mt-4">
+    <!-- Welcome Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h1 class="card-title h2">Welcome, <%= user.org_name %></h1>
+            <p class="card-text text-muted">Schedule and manage your SMS announcements from your dashboard.</p>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-muted mb-2">Total Subscribers</h3>
+                    <p class="h2 mb-0"><%= stats.totalSubscribers %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-muted mb-2">Total Announcements</h3>
+                    <p class="h2 mb-0"><%= stats.totalAnnouncements %></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="h6 text-muted mb-2">Pending Announcements</h3>
+                    <p class="h2 mb-0"><%= stats.pendingAnnouncements %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h5 mb-4">Quick Actions</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="/dashboard/announcements/create" class="btn btn-primary w-100">
+                        Create New Announcement
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/dashboard/announcements" class="btn btn-outline-secondary w-100">
+                        View Announcements
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="card">
+        <div class="card-body">
+            <h2 class="h5 mb-4">How It Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style="width: 32px; height: 32px;">
+                                1
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h3 class="h6 mb-1">Create an Announcement</h3>
+                            <p class="small text-muted mb-0">Write your message and schedule when you want it to be sent.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style="width: 32px; height: 32px;">
+                                2
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h3 class="h6 mb-1">Share Your Handle</h3>
+                            <p class="small text-muted mb-0">Share your organization handle with your audience so they can subscribe.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style="width: 32px; height: 32px;">
+                                3
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h3 class="h6 mb-1">Send Messages</h3>
+                            <p class="small text-muted mb-0">Your announcements will be automatically sent to all subscribers at the scheduled time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

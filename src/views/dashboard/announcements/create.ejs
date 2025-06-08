@@ -1,0 +1,106 @@
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Create Announcement</h1>
+        <a href="/dashboard/announcements" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Announcements
+        </a>
+    </div>
+
+    <!-- Create Form -->
+    <div class="card">
+        <div class="card-body">
+            <form action="/dashboard/announcements" method="POST">
+                <!-- Message -->
+                <div class="mb-4">
+                    <label for="content" class="form-label">Message</label>
+                    <textarea id="content" name="content" rows="4" 
+                        class="form-control"
+                        required></textarea>
+                    <div class="form-text">
+                        Maximum 160 characters. <span id="charCount">0</span> characters remaining.
+                    </div>
+                </div>
+
+                <!-- Scheduling -->
+                <div class="row mb-4">
+                    <!-- Date -->
+                    <div class="col-md-6">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" name="date" id="date" 
+                            class="form-control"
+                            required>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="col-md-6">
+                        <label for="time" class="form-label">Time</label>
+                        <input type="time" name="time" id="time" 
+                            class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <!-- Timezone -->
+                <div class="mb-4">
+                    <label for="timezone" class="form-label">Timezone</label>
+                    <select name="timezone" id="timezone" 
+                        class="form-select"
+                        required>
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time</option>
+                        <option value="America/Chicago">Central Time</option>
+                        <option value="America/Denver">Mountain Time</option>
+                        <option value="America/Los_Angeles">Pacific Time</option>
+                    </select>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-calendar-plus"></i> Schedule Announcement
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Character count for message
+const messageTextarea = document.getElementById('content');
+const charCount = document.getElementById('charCount');
+const maxLength = 160;
+
+messageTextarea.addEventListener('input', function() {
+    const remaining = maxLength - this.value.length;
+    charCount.textContent = remaining;
+    
+    if (remaining < 0) {
+        this.value = this.value.substring(0, maxLength);
+        charCount.textContent = 0;
+    }
+});
+
+// Set default date and time to now
+const now = new Date();
+const dateInput = document.getElementById('date');
+const timeInput = document.getElementById('time');
+
+dateInput.value = now.toISOString().split('T')[0];
+timeInput.value = now.toTimeString().slice(0, 5);
+
+// Set default timezone to user's timezone
+const timezoneSelect = document.getElementById('timezone');
+const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const timezoneMap = {
+    'America/New_York': 'Eastern Time',
+    'America/Chicago': 'Central Time',
+    'America/Denver': 'Mountain Time',
+    'America/Los_Angeles': 'Pacific Time'
+};
+
+if (timezoneMap[userTimezone]) {
+    timezoneSelect.value = userTimezone;
+}
+</script> 

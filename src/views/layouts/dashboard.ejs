@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Scheduler - <%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <!-- Left side - Logo -->
+                <div class="flex items-center">
+                    <a href="/dashboard" class="flex items-center">
+                        <img class="h-8 w-auto" src="/images/logo.png" alt="SMS Scheduler">
+                        <span class="ml-2 text-xl font-semibold text-gray-800">SMS Scheduler</span>
+                    </a>
+                </div>
+
+                <!-- Right side - Customer & Logout -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative group">
+                        <button class="flex items-center text-gray-700 hover:text-gray-900">
+                            <span class="mr-2"><%= user.customer.name %></span>
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div class="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-xl hidden group-hover:block">
+                            <a href="/dashboard/account" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
+                        </div>
+                    </div>
+                    <form action="/auth/logout" method="POST" class="inline">
+                        <button type="submit" class="text-gray-700 hover:text-gray-900">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <% if (messages.error) { %>
+        <div class="max-w-7xl mx-auto px-4 mt-4">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                <%= messages.error %>
+            </div>
+        </div>
+    <% } %>
+    <% if (messages.success) { %>
+        <div class="max-w-7xl mx-auto px-4 mt-4">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                <%= messages.success %>
+            </div>
+        </div>
+    <% } %>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <%- body %>
+    </main>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html> 

@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Announcements</h1>
+    <a href="/dashboard/announcements/create" class="btn btn-primary">Create New Announcement</a>
+  </div>
+
+  <% if (announcements && announcements.length > 0) { %>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Content</th>
+            <th>Scheduled Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% announcements.forEach(announcement => { %>
+            <tr>
+              <td><%= announcement.content %></td>
+              <td><%= new Date(announcement.scheduled_time).toLocaleString(undefined, {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}) %></td>
+              <td>
+                <% if (announcement.is_sent) { %>
+                  <span class="badge bg-success">Sent</span>
+                <% } else { %>
+                  <span class="badge bg-warning">Pending</span>
+                <% } %>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <a href="/dashboard/announcements/<%= announcement._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                  <form action="/dashboard/announcements/<%= announcement._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this announcement?')">Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">
+      No announcements found. Create your first announcement!
+    </div>
+  <% } %>
+</div> 

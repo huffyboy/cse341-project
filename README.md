@@ -1,159 +1,90 @@
-# Customer Management API
+# SMS Scheduler
 
-A RESTful API for managing customers and their subscribers, built with Node.js, Express, and MongoDB.
+A full-stack application for scheduling SMS announcements, built with Node.js, Express, MongoDB, and OAuth2 authentication.
+
+## Core Technologies
+- **Runtime**: Node.js with ES Modules
+- **Framework**: Express.js 5.x
+- **Database**: MongoDB with Mongoose ODM
+- **Template Engine**: EJS with express-ejs-layouts
+- **Authentication**: Passport.js with OAuth2 (Google & GitHub)
+
+## Application Structure
+
+### Public Routes
+- `/` - Home page with service description and sign-in options
+- `/auth/login` - Login page with OAuth options
+- `/auth/logout` - Logout endpoint
+- `/auth/setup` - Initial account setup for new users
+
+### Protected Routes (Dashboard)
+- `/dashboard` - Main dashboard with announcement stats and subscriber count
+- `/dashboard/account` - Account management and OAuth provider settings
+- `/dashboard/announcements` - List of pending announcements
+- `/dashboard/announcements/create` - Create new announcement
+- `/dashboard/announcements/:id` - View announcement details
+- `/dashboard/announcements/:id/edit` - Edit announcement
+- `/dashboard/announcements/history` - View past announcements
+
+## Navigation Structure
+- **Top Left**: Company name/logo -> Dashboard
+- **Top Right**: 
+  - Organization name -> Account settings
+  - Logout button
 
 ## Features
 
-- Customer management (CRUD operations)
-- Subscriber management (CRUD operations)
-- RESTful API design
-- Swagger documentation
-- MongoDB database integration
-- Environment-based configuration
-- Comprehensive error handling
-- Test routes for development
-- REST Client integration for API testing
+### Authentication
+- OAuth2 authentication with Google and GitHub
+- Multiple OAuth providers per account
+- Initial account setup workflow
+- Session-based authentication
 
-## Prerequisites
+### Dashboard
+- Overview of announcement statistics
+- Total subscriber count
+- Quick access to recent announcements
 
-- Node.js (v14 or higher)
-- MongoDB
-- npm or pnpm
+### Account Management
+- View and edit organization details
+- Manage connected OAuth providers
+- Add additional OAuth providers
 
-## Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd cse341-project
-```
-
-2. Install dependencies:
-```bash
-npm install
-# or
-pnpm install
-```
-
-3. Create a `.env` file in the root directory with the following variables:
-```env
-PORT=3000
-MONGODB_URI=your_mongodb_connection_string
-NODE_ENV=development
-```
-
-## Running the Application
-
-Development mode:
-```bash
-npm run dev
-# or
-pnpm dev
-```
-
-Production mode:
-```bash
-npm start
-# or
-pnpm start
-```
-
-## API Testing
-
-The project includes REST Client files for easy API testing:
-
-1. `tests/api-routes.rest` - Main API endpoints
-2. `tests/test-routes.rest` - Test routes for error handling
-
-To use the REST Client:
-1. Install the "REST Client" extension in VS Code
-2. Open any `.rest` file
-3. Click "Send Request" above any request
-
-You can configure the base URL for testing:
-- Default: `http://localhost:3000`
-- Production: Uncomment and modify the `@baseUrl` line in the `.rest` files
-- Environment variables: Set `HOST` and `PORT` in your environment
-
-## API Documentation
-
-The API documentation is available via Swagger UI at:
-```
-http://localhost:3000/api-docs
-```
-
-## Error Handling
-
-The API uses a standardized error response format:
-```json
-{
-  "status": 400,
-  "message": "Error message",
-  "type": "error_type"
-}
-```
-
-Common error types:
-- 400: Bad Request - Invalid input
-- 401: Unauthorized - Authentication required
-- 403: Forbidden - Insufficient permissions
-- 404: Not Found - Resource not found
-- 409: Conflict - Resource already exists
-- 500: Internal Server Error
+### Announcement Management
+- Create new announcements
+- Edit existing announcements
+- Delete announcements
+- View announcement details
+- View announcement history
+- Schedule announcements for future delivery
 
 ## Project Structure
-
 ```
 src/
 ├── config/         # Configuration files
-├── controllers/    # Route controllers
+├── controllers/    # Route handlers
 ├── middlewares/    # Custom middleware
-├── models/         # Database models
-├── routes/         # API routes
+├── models/         # Mongoose models
+├── routes/         # Express routes
 ├── services/       # Business logic
+├── views/          # EJS templates
+│   ├── auth/       # Authentication views
+│   ├── dashboard/  # Dashboard views
+│   └── layouts/    # Layout templates
 └── server.js       # Application entry point
-tests/
-├── api-routes.rest # API testing
-└── test-routes.rest # Error testing
 ```
 
-## API Endpoints
-
-### Customers
-- GET /api/customers - Get all customers
-- GET /api/customers/:id - Get customer by ID
-- POST /api/customers - Create new customer
-- PUT /api/customers/:id - Update customer
-- DELETE /api/customers/:id - Delete customer
-- GET /api/customers/:id/subscribers - Get customer's subscribers
-
-### Subscribers
-- GET /api/subscribers - Get all subscribers
-- GET /api/subscribers/:id - Get subscriber by ID
-- POST /api/subscribers - Create new subscriber
-- PUT /api/subscribers/:id - Update subscriber
-- DELETE /api/subscribers/:id - Delete subscriber
-
-### Test Routes (Development Only)
-- GET /api/test/error?type={code} - Test error handling
-- POST /api/test/validation - Test input validation
-- GET /api/test/async - Test async error handling
+## Security
+- OAuth2 secure authentication
+- Session management
+- Protected routes
+- Input validation
+- Error handling
 
 ## Development
+- ES Modules
+- Environment-based configuration
+- Development and production modes
+- Hot reloading in development
 
-### Test Routes
-Test routes are only available in development mode (`NODE_ENV=development`). They help test:
-- Error handling
-- Input validation
-- Async operations
-- HTTP status codes
-
-### Environment Variables
-- `PORT`: Server port (default: 3000)
-- `MONGODB_URI`: MongoDB connection string
-- `NODE_ENV`: Environment (development/production)
-- `HOST`: API host (for testing)
-
-## License
-
-MIT 
+Update this file as you make changes to the code

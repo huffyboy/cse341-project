@@ -96,5 +96,19 @@ export class ApiError extends Error {
  * Not found middleware
  */
 export const notFound = (req, res, next) => {
-  next(new ApiError(404, `Not Found - ${req.originalUrl}`));
+  // Check if this is an API request
+  const isApiRequest = req.path.startsWith('/api/');
+  
+  if (isApiRequest) {
+    return res.status(404).json({
+      error: {
+        status: 404,
+        message: `Not Found - ${req.originalUrl}`,
+        type: 'NotFoundError'
+      }
+    });
+  }
+  
+  // For web requests, render the 404 page from the errors directory
+  res.status(404).render('errors/404');
 }; 

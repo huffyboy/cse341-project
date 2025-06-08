@@ -1,0 +1,96 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-900">Edit Announcement</h1>
+        <div class="flex space-x-4">
+            <a href="/dashboard/announcements/<%= announcement._id %>" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                View Details
+            </a>
+            <a href="/dashboard/announcements" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Announcements
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="/dashboard/announcements/<%= announcement._id %>" method="POST" class="space-y-6">
+            <input type="hidden" name="_method" value="PUT">
+            
+            <!-- Message -->
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                <div class="mt-1">
+                    <textarea id="message" name="message" rows="4" 
+                        class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        required><%= announcement.message %></textarea>
+                </div>
+                <p class="mt-2 text-sm text-gray-500">
+                    Maximum 160 characters. <span id="charCount">0</span> characters remaining.
+                </p>
+            </div>
+
+            <!-- Scheduling -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Date -->
+                <div>
+                    <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+                    <input type="date" name="date" id="date" 
+                        value="<%= new Date(announcement.scheduled_time).toISOString().split('T')[0] %>"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <!-- Time -->
+                <div>
+                    <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
+                    <input type="time" name="time" id="time" 
+                        value="<%= new Date(announcement.scheduled_time).toTimeString().slice(0, 5) %>"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        required>
+                </div>
+            </div>
+
+            <!-- Timezone -->
+            <div>
+                <label for="timezone" class="block text-sm font-medium text-gray-700">Timezone</label>
+                <select name="timezone" id="timezone" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    required>
+                    <option value="UTC" <%= announcement.timezone === 'UTC' ? 'selected' : '' %>>UTC</option>
+                    <option value="America/New_York" <%= announcement.timezone === 'America/New_York' ? 'selected' : '' %>>Eastern Time</option>
+                    <option value="America/Chicago" <%= announcement.timezone === 'America/Chicago' ? 'selected' : '' %>>Central Time</option>
+                    <option value="America/Denver" <%= announcement.timezone === 'America/Denver' ? 'selected' : '' %>>Mountain Time</option>
+                    <option value="America/Los_Angeles" <%= announcement.timezone === 'America/Los_Angeles' ? 'selected' : '' %>>Pacific Time</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end">
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                    Update Announcement
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Character count for message
+const messageTextarea = document.getElementById('message');
+const charCount = document.getElementById('charCount');
+const maxLength = 160;
+
+function updateCharCount() {
+    const remaining = maxLength - messageTextarea.value.length;
+    charCount.textContent = remaining;
+    
+    if (remaining < 0) {
+        messageTextarea.value = messageTextarea.value.substring(0, maxLength);
+        charCount.textContent = 0;
+    }
+}
+
+messageTextarea.addEventListener('input', updateCharCount);
+updateCharCount(); // Initial count
+</script> 

@@ -17,4 +17,7 @@ const subscriberSchema = new mongoose.Schema({
 // Add index for faster queries
 subscriberSchema.index({ customer: 1 });
 
-export default mongoose.model('Subscriber', subscriberSchema); 
+// Check if model exists before creating
+const Subscriber = mongoose.models.Subscriber || mongoose.model('Subscriber', subscriberSchema);
+
+export default Subscriber; 

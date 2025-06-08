@@ -1,0 +1,111 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">Complete Your Profile</h2>
+        </div>
+        <div class="card-body">
+          <% if (typeof error !== 'undefined') { %>
+            <div class="alert alert-danger" role="alert">
+              <%= error %>
+            </div>
+          <% } %>
+
+          <form action="/auth/complete-profile" method="POST">
+            <div class="mb-3">
+              <label for="org_name" class="form-label">Organization Name</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="org_name" 
+                name="org_name" 
+                value="<%= typeof formData !== 'undefined' ? formData.org_name : user.org_name %>"
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="org_handle" class="form-label">Organization Handle</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="org_handle" 
+                name="org_handle" 
+                value="<%= typeof formData !== 'undefined' ? formData.org_handle : user.org_handle %>"
+                required
+              >
+              <div class="form-text">This will be used to identify your organization via text</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email (Optional)</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email" 
+                value="<%= typeof formData !== 'undefined' ? formData.email : user.email %>"
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number (Optional)</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                id="phone" 
+                name="phone" 
+                value="<%= typeof formData !== 'undefined' ? formData.phone : user.phone %>"
+              >
+            </div>
+
+            <div class="mb-3">
+              <label for="timezone" class="form-label">Timezone</label>
+              <select class="form-select" id="timezone" name="timezone" required>
+                <option value="">Select a timezone</option>
+                <% const timezones = [
+                  'America/New_York',
+                  'America/Chicago',
+                  'America/Denver',
+                  'America/Los_Angeles',
+                  'America/Anchorage',
+                  'Pacific/Honolulu'
+                ]; %>
+                <% timezones.forEach(tz => { %>
+                  <option 
+                    value="<%= tz %>" 
+                    <%= (typeof formData !== 'undefined' ? formData.timezone : user.timezone) === tz ? 'selected' : '' %>
+                  >
+                    <%= tz %>
+                  </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                <input 
+                  type="checkbox" 
+                  class="form-check-input" 
+                  id="marketing_consent" 
+                  name="marketing_consent" 
+                  value="true"
+                  <%= (typeof formData !== 'undefined' ? formData.marketing_consent : user.marketing_consent) ? 'checked' : '' %>
+                >
+                <label class="form-check-label" for="marketing_consent">
+                  I agree to receive marketing communications
+                </label>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary">Complete Profile</button>
+              <a href="/auth/home" class="btn btn-outline-secondary">Skip for Now</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
