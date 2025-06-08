@@ -61,20 +61,23 @@ app.use(morgan('dev'));
 // Session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   store: new MongoStore({
     mongoUrl: process.env.MONGODB_URI,
     ttl: 24 * 60 * 60, // 1 day
     autoRemove: 'native',
-    touchAfter: 24 * 3600 // 24 hours
+    touchAfter: 24 * 3600, // 24 hours
+    collectionName: 'sessions'
   }),
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
-    sameSite: 'lax'
-  }
+    sameSite: 'lax',
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
+  },
+  name: 'sessionId'
 }));
 
 // Debug middleware for session
@@ -83,7 +86,8 @@ app.use((req, res, next) => {
     sessionID: req.sessionID,
     hasSession: !!req.session,
     hasUser: !!req.session?.passport?.user,
-    user: req.session?.passport?.user
+    user: req.session?.passport?.user,
+    cookie: req.session?.cookie
   });
   next();
 });
