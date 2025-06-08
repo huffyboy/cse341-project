@@ -20,6 +20,7 @@ import { createErrorHandler, notFound } from './middlewares/errorHandler.js';
 import methodOverride from 'method-override';
 import flash from 'connect-flash';
 import Customer from './models/Customer.js';
+import MongoStore from 'connect-mongo';
 
 // Load environment variables
 dotenv.config();
@@ -59,19 +60,47 @@ app.use(morgan('dev'));
 
 // Session middleware
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-secret-key',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'lax'
-    }
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongoUrl: process.env.MONGODB_URI,
+    ttl: 24 * 60 * 60, // 1 day
+    autoRemove: 'native',
+    touchAfter: 24 * 3600 // 24 hours
+  }),
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    sameSite: 'lax'
+  }
 }));
+
+// Debug middleware for session
+app.use((req, res, next) => {
+  console.log('Session debug:', {
+    sessionID: req.sessionID,
+    hasSession: !!req.session,
+    hasUser: !!req.session?.passport?.user,
+    user: req.session?.passport?.user
+  });
+  next();
+});
 
 // Initialize Passport and restore authentication state from session
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Debug middleware for authentication
+app.use((req, res, next) => {
+  console.log('Auth debug:', {
+    isAuthenticated: req.isAuthenticated(),
+    user: req.user,
+    session: req.session
+  });
+  next();
+});
 
 // Flash middleware - must be after session and passport
 app.use(flash());
