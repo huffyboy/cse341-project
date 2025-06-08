@@ -84,36 +84,9 @@ app.use(session({
 // Trust proxy
 app.set('trust proxy', 1);
 
-// Debug middleware for session
-app.use((req, res, next) => {
-  console.log('Session debug:', {
-    sessionID: req.sessionID,
-    hasSession: !!req.session,
-    hasUser: !!req.session?.passport?.user,
-    user: req.session?.passport?.user,
-    cookie: req.session?.cookie,
-    headers: {
-      host: req.headers.host,
-      origin: req.headers.origin,
-      referer: req.headers.referer
-    }
-  });
-  next();
-});
-
 // Initialize Passport and restore authentication state from session
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Debug middleware for authentication
-app.use((req, res, next) => {
-  console.log('Auth debug:', {
-    isAuthenticated: req.isAuthenticated(),
-    user: req.user,
-    session: req.session
-  });
-  next();
-});
 
 // Flash middleware - must be after session and passport
 app.use(flash());

@@ -8,32 +8,17 @@ dotenv.config();
 
 // Passport session serialization
 passport.serializeUser((user, done) => {
-  console.log('Serializing user:', {
-    id: user._id,
-    email: user.email,
-    sessionID: user.sessionID
-  });
   done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  console.log('Deserializing user ID:', id);
   try {
     const user = await Customer.findById(id);
-    console.log('Deserialized user:', {
-      found: !!user,
-      id: user?._id,
-      email: user?.email
-    });
-    
     if (!user) {
-      console.log('User not found during deserialization');
       return done(null, false);
     }
-    
     done(null, user);
   } catch (error) {
-    console.error('Error in deserializeUser:', error);
     done(error);
   }
 });
