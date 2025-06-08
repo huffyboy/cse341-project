@@ -112,7 +112,9 @@ passport.use('google-connect', new GoogleStrategy({
 passport.use('github-signup', new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: '/auth/github/callback'
+    callbackURL: process.env.NODE_ENV === 'production' 
+      ? `${process.env.URL}/auth/github/callback`
+      : '/auth/github/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -159,7 +161,9 @@ passport.use('github-signup', new GitHubStrategy({
 passport.use('github-connect', new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: '/auth/github/callback'
+    callbackURL: process.env.NODE_ENV === 'production'
+      ? `${process.env.URL}/auth/github/callback`
+      : '/auth/github/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
