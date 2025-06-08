@@ -28,6 +28,9 @@ router.get('/github',
   (req, res, next) => {
     // Store the return URL in the session
     req.session.returnTo = req.query.returnTo || '/dashboard';
+    console.log('GitHub auth URL:', process.env.NODE_ENV === 'production' 
+      ? `${process.env.URL}/auth/github/callback`
+      : '/auth/github/callback');
     passport.authenticate('github-signup', { 
       scope: ['user:email'],
       failureRedirect: '/auth/login',

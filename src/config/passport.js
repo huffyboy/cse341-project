@@ -117,6 +117,9 @@ passport.use('github-signup', new GitHubStrategy({
       : '/auth/github/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
+    console.log('GitHub callback URL:', process.env.NODE_ENV === 'production' 
+      ? `${process.env.URL}/auth/github/callback`
+      : '/auth/github/callback');
     try {
       // Check if user already exists with this GitHub ID
       const existingUser = await Customer.findOne({
