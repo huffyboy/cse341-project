@@ -37,20 +37,14 @@ export const getCompleteProfileForm = (req, res) => {
 
 // Get setup page
 export const getSetup = (req, res) => {
-  console.log('getSetup called. User:', req.user ? 'exists' : 'not found');
-  console.log('Session:', req.session);
-  
   if (!req.isAuthenticated()) {
-    console.log('User not authenticated, redirecting to login');
     return res.redirect('/auth/login');
   }
   
   if (req.user.account_setup_completed) {
-    console.log('Account setup already completed, redirecting to dashboard');
     return res.redirect('/dashboard');
   }
 
-  console.log('Rendering setup page');
   res.render('auth/setup', {
     title: 'Complete Your Profile',
     error: req.flash('error'),

@@ -134,9 +134,6 @@ passport.use('github-signup', new GitHubStrategy({
       : '/auth/github/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log('GitHub callback URL:', process.env.NODE_ENV === 'production' 
-      ? `${process.env.URL}/auth/github/callback`
-      : '/auth/github/callback');
     try {
       // Check if user already exists with this GitHub ID
       const existingUser = await Customer.findOne({
@@ -232,16 +229,5 @@ passport.use('github-connect', new GitHubStrategy({
     }
   }
 ));
-
-// Add session debug middleware
-passport.use('session-debug', (req, res, next) => {
-  console.log('Passport session debug:', {
-    sessionID: req.sessionID,
-    isAuthenticated: req.isAuthenticated(),
-    user: req.user,
-    session: req.session
-  });
-  next();
-});
 
 export default passport; 

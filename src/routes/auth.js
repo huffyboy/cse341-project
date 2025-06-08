@@ -14,15 +14,9 @@ const router = express.Router();
 
 // Custom middleware for setup routes - only checks authentication
 const isAuthenticatedForSetup = (req, res, next) => {
-  console.log('isAuthenticatedForSetup middleware - User:', req.user ? 'exists' : 'not found');
-  console.log('isAuthenticatedForSetup middleware - Session:', req.session);
-  console.log('isAuthenticatedForSetup middleware - isAuthenticated:', req.isAuthenticated());
-  
   if (!req.isAuthenticated()) {
-    console.log('isAuthenticatedForSetup middleware - Not authenticated, redirecting to login');
     return res.redirect('/auth/login');
   }
-  console.log('isAuthenticatedForSetup middleware - Authentication successful, proceeding to next middleware');
   next();
 };
 
@@ -54,7 +48,6 @@ router.get('/github/callback',
         failureFlash: true
       })(req, res, next);
     } else {
-      console.log('Starting GitHub signup authentication...');
       passport.authenticate('github-signup', {
         failureRedirect: '/auth/login',
         failureFlash: true
@@ -62,9 +55,6 @@ router.get('/github/callback',
     }
   },
   (req, res) => {
-    console.log('GitHub callback completed. User:', req.user ? 'exists' : 'not found');
-    console.log('Session:', req.session);
-    
     // If this was a connect flow
     if (req.session.connectCustomerId) {
       delete req.session.connectCustomerId;
@@ -77,7 +67,6 @@ router.get('/github/callback',
     delete req.session.returnTo;
     
     if (!req.user.account_setup_completed) {
-      console.log('Redirecting to setup page...');
       return res.redirect('/auth/setup');
     }
     
@@ -174,11 +163,7 @@ router.get('/connect/:provider', isAuthenticated, async (req, res, next) => {
 });
 
 // Setup routes - use isAuthenticatedForSetup instead of isAuthenticated
-router.get('/setup', isAuthenticatedForSetup, (req, res, next) => {
-  console.log('Setup route accessed. User:', req.user ? 'exists' : 'not found');
-  console.log('Session:', req.session);
-  getSetup(req, res, next);
-});
+router.get('/setup', isAuthenticatedForSetup, getSetup);
 router.post('/setup', isAuthenticatedForSetup, postSetup);
 
 // Logout - handle both GET and POST requests
