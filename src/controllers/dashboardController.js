@@ -1,5 +1,5 @@
 import announcementService from '../services/announcementService.js';
-import Subscriber from '../models/subscriber.js';
+import Subscriber from '../models/Subscriber.js';
 
 // Get dashboard overview
 export const index = async (req, res) => {

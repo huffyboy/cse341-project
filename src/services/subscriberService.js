@@ -1,4 +1,4 @@
-import Subscriber from '../models/subscriber.js';
+import Subscriber from '../models/Subscriber.js';
 
 /**
  * Get all subscribers with optional filtering
